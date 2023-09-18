@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import "questionBank.dart";
+
+QuestionBank questionBank = QuestionBank();
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,18 +39,49 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
-  List<Icon> scoreCard = [
-    // Icon(
-    //   Icons.check,
-    //   color: Colors.green,
-    // ),
-  ];
+  int currentIndex = 0;
+  bool answer = true;
+  List<Icon> scoreCard = [];
 
-  List<String> questions = [
-    'You can lead a  cow down stairs but not up stairs.',
-    'Approximately one quater of human bones are in the feet.',
-    'A slug\'s blood is green.'
-  ];
+  bool getUserAnswer(bool ans) {
+    answer = ans;
+    return ans;
+  }
+
+  bool isCorrect() {
+    if (answer == questionBank.questions[currentIndex].questionAnswer) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void getNextQuestion() {
+    setState(() {
+      bool userCorrect = isCorrect();
+      if (userCorrect == true) {
+        scoreCard.add(
+          Icon(
+            Icons.check,
+            color: Colors.green,
+          ),
+        );
+      } else {
+        scoreCard.add(
+          Icon(
+            Icons.close,
+            color: Colors.red,
+          ),
+        );
+      }
+
+      if (currentIndex == questionBank.questions.length - 1) {
+        currentIndex = 0;
+      } else {
+        currentIndex += 1;
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +95,7 @@ class _QuizState extends State<Quiz> {
             padding: EdgeInsets.all(10),
             child: Center(
               child: Text(
-                "This is where the question will go.",
+                questionBank.questions[currentIndex].questionString,
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 25.0,
@@ -71,12 +110,18 @@ class _QuizState extends State<Quiz> {
             child: TextButton(
               child: Text(
                 "True",
-                style: TextStyle(fontSize: 15, color: Colors.white),
+                style: TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
               ),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
               ),
-              onPressed: () {},
+              onPressed: () {
+                getUserAnswer(true);
+                getNextQuestion();
+              },
             ),
           ),
         ),
@@ -84,7 +129,10 @@ class _QuizState extends State<Quiz> {
           child: Padding(
             padding: EdgeInsets.all(15),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                getUserAnswer(false);
+                getNextQuestion();
+              },
               child: Text(
                 "False",
                 style: TextStyle(fontSize: 15, color: Colors.white),
@@ -102,10 +150,3 @@ class _QuizState extends State<Quiz> {
     );
   }
 }
-
-/*
-
-1) 'You can lead a  cow down stairs but not up stairs.', flase
-2) 'Approximately one quater of human bones are in the feet. , true
-3) 'A slug\'s blood is green.' true
-*/
