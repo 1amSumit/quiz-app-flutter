@@ -32,26 +32,16 @@ class Quiz extends StatefulWidget {
 
 class _QuizState extends State<Quiz> {
   List<Icon> scoreCard = [
-    Icon(
-      Icons.check,
-      color: Colors.green,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
-    Icon(
-      Icons.close,
-      color: Colors.red,
-    ),
+    // Icon(
+    //   Icons.check,
+    //   color: Colors.green,
+    // ),
+  ];
+
+  List<String> questions = [
+    'You can lead a  cow down stairs but not up stairs.',
+    'Approximately one quater of human bones are in the feet.',
+    'A slug\'s blood is green.'
   ];
 
   @override
@@ -112,3 +102,10 @@ class _QuizState extends State<Quiz> {
     );
   }
 }
+
+/*
+
+1) 'You can lead a  cow down stairs but not up stairs.', flase
+2) 'Approximately one quater of human bones are in the feet. , true
+3) 'A slug\'s blood is green.' true
+*/
