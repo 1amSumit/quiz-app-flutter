@@ -56,6 +56,11 @@ class _QuizState extends State<Quiz> {
     }
   }
 
+  void reset() {
+    scoreCard = [];
+    currentIndex = 0;
+  }
+
   void getNextQuestion() {
     setState(() {
       bool userCorrect = isCorrect();
@@ -77,6 +82,7 @@ class _QuizState extends State<Quiz> {
 
       if (currentIndex == questionBank.questions.length - 1) {
         currentIndex = 0;
+        reset();
       } else {
         currentIndex += 1;
       }
@@ -139,6 +145,23 @@ class _QuizState extends State<Quiz> {
               ),
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(25),
+            child: TextButton(
+              onPressed: () {
+                reset();
+              },
+              child: Text(
+                "Reset the quiz",
+                style: TextStyle(fontSize: 15, color: Colors.white),
+              ),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
               ),
             ),
           ),
